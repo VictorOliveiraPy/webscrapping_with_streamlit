@@ -1,0 +1,25 @@
+version: "3.3"
+
+services:
+
+  database:
+    container_name: dynamodb-local
+    image: amazon/dynamodb-local
+    # To persist the data we do - https://stackoverflow.com/a/52853294/7127317
+    volumes:
+      - ./dynamodb_data:/home/dynamodblocal/data
+    ports:
+      - "8000:8000"
+
+  app:
+    build: .
+    ports:
+      - "9000:9000"
+    volumes:
+      - .:/app
+    depends_on:
+      - database
+
+
+volumes:
+  dynamodb_data:
